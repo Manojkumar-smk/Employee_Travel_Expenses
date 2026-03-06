@@ -34,7 +34,6 @@ service ProjectService {
         }
 
 }
-
 annotate ProjectService.Projects with {
     status @Common.Text           : status.name
            @Common.TextArrangement: #TextOnly;

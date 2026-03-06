@@ -164,12 +164,16 @@ annotate service.Projects with @(
             $Type : 'UI.DataFieldForAction',
             Action : 'ProjectService.AddBudget',
             Label : 'Add Budget',
+            ![@UI.Hidden] : IsActiveEntity,
         },
     ],
 );
 
 annotate service.Projects with {
-    projId @Common.Label : 'Project ID'
+    projId @(
+        Common.Label : 'Project ID',
+        Common.FieldControl : #ReadOnly,
+    )
 };
 
 annotate service.Projects with {
