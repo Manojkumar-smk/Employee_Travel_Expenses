@@ -173,6 +173,7 @@ annotate service.Projects with {
     projId @(
         Common.Label : 'Project ID',
         Common.FieldControl : #ReadOnly,
+        Core.Immutable : true
     )
 };
 

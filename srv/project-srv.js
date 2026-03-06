@@ -5,7 +5,8 @@ module.exports = class ProjectService extends cds.ApplicationService {
     async init() {
         const { Projects } = this.entities;
 
-        this.before('CREATE', Projects, async (req) => {
+        this.before('NEW', Projects.drafts, async (req) => {
+            console.log('new event triggered');
             const tx = cds.tx(req);
             const result = await tx.run(
                 SELECT.one.from(Projects).columns('projId')
