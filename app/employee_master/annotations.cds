@@ -150,7 +150,10 @@ annotate service.Employees with @(
 );
 
 annotate service.Employees with {
-    empId @Common.Label : 'Employee ID'
+    empId @(
+        Common.Label : 'Employee ID',
+        Common.FieldControl : #ReadOnly,
+    )
 };
 
 annotate service.Employees with {

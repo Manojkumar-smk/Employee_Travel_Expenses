@@ -2,7 +2,6 @@ using {com.al.a1f6f1b3.db as a1f6f1b3} from '../db/schema';
 
 service ProjectService {
     entity ProjectStatus as projection on a1f6f1b3.ProjectStatus;
-
             @odata.draft.enabled
     entity Projects      as
         projection on a1f6f1b3.Projects {
