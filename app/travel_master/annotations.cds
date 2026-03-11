@@ -206,7 +206,7 @@ annotate service.TravelRequest with {
 };
 
 annotate service.TravelRequest with {
-    tripnumber @(
+    tripNumber @(
     Common.Label : 'Trip Number',
     Common.ValueList : {
         $Type : 'Common.ValueListType',
