@@ -137,6 +137,19 @@ annotate service.TravelRequest with @(
         },
         Text : 'Table View 1',
     },
+    UI.HeaderInfo : {
+        TypeName : 'Travel Expense',
+        TypeNamePlural : 'Travel Expenses',
+        Title : {
+            $Type : 'UI.DataField',
+            Value : tripNumber,
+        },
+        Description : {
+            $Type : 'UI.DataField',
+            Value : purpose,
+        },
+        TypeImageUrl : 'sap-icon://travel-request',
+    },
 );
 
 annotate service.TravelRequest with {
@@ -202,35 +215,18 @@ annotate service.TravelRequest with {
             ],
         },
         Common.Label : 'Project ID',
+        Common.ExternalID : project.Project,
     )
 };
 
 annotate service.TravelRequest with {
     tripNumber @(
     Common.Label : 'Trip Number',
-    Common.ValueList : {
-        $Type : 'Common.ValueListType',
-        CollectionPath : 'TravelRequest',
-        Parameters : [
-            {
-                $Type : 'Common.ValueListParameterInOut',
-                LocalDataProperty : tripNumber,
-                ValueListProperty : 'tripNumber',
-            },
-        ],
-        Label : 'Trip Number',
-    },
-    Common.ValueListWithFixedValues : true,
-)
+    )
 };
 
 annotate service.TravelExpenses with @(
     UI.LineItem #Expenses : [
-        {
-            $Type : 'UI.DataField',
-            Value : travel_ID,
-            Label : 'travel_ID',
-        },
         {
             $Type : 'UI.DataField',
             Value : billNo,
@@ -240,6 +236,16 @@ annotate service.TravelExpenses with @(
             $Type : 'UI.DataField',
             Value : description,
             Label : 'description',
+        },
+        {
+            $Type : 'UI.DataField',
+            Value : category_ID,
+            Label : 'category_ID',
+        },
+        {
+            $Type : 'UI.DataField',
+            Value : amount,
+            Label : 'amount',
         },
     ],
     UI.Facets : [
@@ -299,6 +305,15 @@ annotate service.TravelExpenses with @(
             },
         ],
     },
+    UI.HeaderInfo : {
+        TypeName : 'Travel Expense',
+        TypeNamePlural : 'Travel Expenses',
+        Title : {
+            $Type : 'UI.DataField',
+            Value : billNo,
+        },
+        TypeImageUrl : 'sap-icon://travel-expense',
+    },
 );
 
 annotate service.TravelExpenses with {
@@ -316,9 +331,26 @@ annotate service.TravelExpenses with {
             Label : 'Categories',
         },
         Common.ValueListWithFixedValues : true,
+        Common.ExternalID : category.category,
 )};
 
 annotate service.Categories with {
     ID @Common.Text : category
+};
+
+annotate service.TravelRequest with {
+    approvedAmt @Common.FieldControl : #ReadOnly
+};
+
+annotate service.TravelRequest with {
+    eligibleAmt @Common.FieldControl : #ReadOnly
+};
+
+annotate service.TravelRequest with {
+    rejectionReason @UI.MultiLineText : true
+};
+
+annotate service.TravelRequest with {
+    incurredAmt @Common.FieldControl : #ReadOnly
 };
 
