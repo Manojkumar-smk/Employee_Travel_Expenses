@@ -2,6 +2,7 @@ using {com.al.a1f6f1b3.db as a1f6f1b3} from '../db/schema';
 
 service ProjectService {
     entity ProjectStatus as projection on a1f6f1b3.ProjectStatus;
+    entity Employees as projection on a1f6f1b3.Employees;
             @odata.draft.enabled
     entity Projects      as
         projection on a1f6f1b3.Projects {
@@ -36,5 +37,7 @@ service ProjectService {
 }
 annotate ProjectService.Projects with {
     status @Common.Text           : status.name
+           @Common.TextArrangement: #TextOnly;
+    projManager @Common.Text           : projManager.name
            @Common.TextArrangement: #TextOnly;
 };

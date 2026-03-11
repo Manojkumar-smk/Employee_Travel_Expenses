@@ -41,7 +41,7 @@ annotate service.Projects with @(
             {
                 $Type : 'UI.DataField',
                 Value : status_ID,
-                Label : 'status_ID',
+                Label : 'Status',
             },
             {
                 $Type : 'UI.DataField',
@@ -49,6 +49,11 @@ annotate service.Projects with @(
                 Label : 'Budget Avail',
                 Criticality : statusCriticality,
                 CriticalityRepresentation : statusCriticality
+            },
+            {
+                $Type : 'UI.DataField',
+                Value : projManager_ID,
+                Label : 'Project Manager',
             },
         ],
     },
@@ -109,7 +114,6 @@ annotate service.Projects with @(
     ],
     UI.SelectionFields : [
         projId,
-        Project,
         active,
     ],
     UI.SelectionPresentationVariant #tableView : {
@@ -173,6 +177,23 @@ annotate service.Projects with {
     projId @(
         Common.Label : 'Project ID',
         Common.FieldControl : #ReadOnly,
+        Common.ValueList : {
+            $Type : 'Common.ValueListType',
+            CollectionPath : 'Projects',
+            Parameters : [
+                {
+                    $Type : 'Common.ValueListParameterInOut',
+                    LocalDataProperty : projId,
+                    ValueListProperty : 'projId',
+                },
+                {
+                    $Type : 'Common.ValueListParameterDisplayOnly',
+                    ValueListProperty : 'Project',
+                },
+            ],
+            Label : 'Project Id',
+        },
+        Common.ValueListWithFixedValues : false,
     )
 };
 
@@ -215,4 +236,33 @@ annotate service.ProjectStatus with {
         Common.Text : name,
         Common.Text.@UI.TextArrangement : #TextOnly,
 )};
+
+annotate service.Projects with {
+    projManager @(
+        Common.ValueList : {
+            $Type : 'Common.ValueListType',
+            CollectionPath : 'Employees',
+            Parameters : [
+                {
+                    $Type : 'Common.ValueListParameterInOut',
+                    LocalDataProperty : projManager_ID,
+                    ValueListProperty : 'ID',
+                },
+                {
+                    $Type : 'Common.ValueListParameterDisplayOnly',
+                    ValueListProperty : 'empId',
+                },
+                {
+                    $Type : 'Common.ValueListParameterDisplayOnly',
+                    ValueListProperty : 'name',
+                },
+            ],
+            Label : 'Employee List',
+        },
+        Common.ValueListWithFixedValues : false,
+)};
+
+annotate service.Employees with {
+    ID @Common.Text : empId
+};
 
