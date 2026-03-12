@@ -1,0 +1,22 @@
+<mvc:View controllerName="com.demo.approvalmaster.controller.travelrequest"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core">
+    <Dialog id="empDialog" title="Enter Employee ID" type="Message" 
+    state="Information" draggable="true" resizable="true">
+    <content>
+    <VBox class="sapUiSmallMargin" width="300px">
+    <Label text="Employee ID" required="true" class="sapUiSmallMarginBottom"/>
+    <Input id="empIdInput" width="100%"  placeholder="e.g. E-20609" liveChange="onEmpIdLiveChange" />
+    <Text id="empNameText" text="" class="sapUiSmallMarginTop" visible="false"/>
+    <Text id="empErrText" text="" class="sapUiSmallMarginTop" visible="false" />
+    </VBox>
+    </content>
+    <buttons>
+    <Button id="proceedBtn" text="Proceed" type="Emphasized" enabled="false" press="onProceed"></Button>
+    </buttons>
+    </Dialog>
+    <Page id="page" title="Travel Request">
+
+    </Page>
+</mvc:View>

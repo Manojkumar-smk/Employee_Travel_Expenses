@@ -14,8 +14,10 @@ entity Employees : cuid, managed {
     location         : String(30);
     grade            : String(10);
     salary           : Decimal(9, 2);
-    @Core.MediaType: photoType
+
+    @Core.MediaType  : photoType
     photo            : LargeBinary;
+
     @Core.IsMediaType: true
     photoType        : String default 'image/jpeg';
     assignedProjects : Composition of many ProjectAssignment
@@ -73,7 +75,7 @@ entity TravelExpenses : cuid {
     amount         : Decimal(10, 2);
     currency       : Currency;
     date           : Date;
-    status         : Boolean;
+    approved       : Boolean;
 
     @Core.MediaType  : attachmentType
     billContent    : LargeBinary;
@@ -88,6 +90,15 @@ entity Categories : cuid {
     category : String(20);
 }
 
-entity TravelApproval : cuid, managed{
-    
+entity TravelApproval : cuid, managed {
+    approver        : Association to Employees;
+    travel          : Association to TravelRequest;
+    approvedAmt     : Decimal(10, 2);
+    remarks         : String(200);
+    actionDate      : Date;
+    status          : String(20) enum {
+        Pending;
+        Approved;
+        Rejected;
+    } default 'Pending';
 }

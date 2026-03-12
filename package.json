@@ -15,7 +15,8 @@
     "start": "cds-serve",
     "watch-employee_master": "cds watch --open com.demo.employeemaster/index.html?sap-ui-xx-viewCache=false --livereload false",
     "watch-project_master": "cds watch --open com.demo.projectmaster/index.html?sap-ui-xx-viewCache=false --livereload false",
-    "watch-travel_master": "cds watch --open com.demo.travelmaster/index.html?sap-ui-xx-viewCache=false --livereload false"
+    "watch-travel_master": "cds watch --open com.demo.travelmaster/index.html?sap-ui-xx-viewCache=false --livereload false",
+    "watch-approval_master": "cds watch --open com.demo.approvalmaster/index.html?sap-ui-xx-viewCache=false --livereload false"
   },
   "private": true,
   "workspaces": [
@@ -24,6 +25,7 @@
   "sapux": [
     "app/employee_master",
     "app/project_master",
-    "app/travel_master"
+    "app/travel_master",
+    "app/approval_master"
   ]
 }
