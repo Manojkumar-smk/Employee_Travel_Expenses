@@ -74,12 +74,12 @@ sap.ui.define([
         _loadTravelRequest: function (sManagerId) {
             const oTable = this.byId("travelRequestTable");
             if (!oTable) {
-                console.warm("Table not Found");
+                console.warn("Table not Found");
                 return;
             }
             const oBinding = oTable.getBinding("items");
             if (!oBinding) {
-                console.warm("Table binding not ready");
+                console.warn("Table binding not ready");
                 return;
             }
             const oFilter = new Filter(
