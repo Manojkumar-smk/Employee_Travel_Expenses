@@ -73,6 +73,7 @@ entity TravelExpenses : cuid {
     amount         : Decimal(10, 2);
     currency       : Currency;
     date           : Date;
+    status         : Boolean;
 
     @Core.MediaType  : attachmentType
     billContent    : LargeBinary;
@@ -85,4 +86,8 @@ entity TravelExpenses : cuid {
 
 entity Categories : cuid {
     category : String(20);
+}
+
+entity TravelApproval : cuid, managed{
+    
 }
