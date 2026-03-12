@@ -4,7 +4,7 @@ sap.ui.define([
     "sap/ui/model/FilterOperator",
     "sap/m/MessageBox",
     "sap/m/MessageToast"
-], (Controller) => {
+], (Controller, Filter, FilterOperator, MessageBox, MessageToast) => {
     "use strict";
 
     return Controller.extend("com.demo.approvalmaster.controller.travelrequest", {
@@ -50,7 +50,7 @@ sap.ui.define([
 
                     const oEmp = aContexts[0].getObject();
                     this.byId("empNameText")
-                        .setText('${oEmp.name} | (${oEmp.role})')
+                        .setText(`${oEmp.name} | (${oEmp.role})`)
                         .setVisible(true);
                     this.byId("empErrText").setVisible(false);
 
@@ -64,7 +64,7 @@ sap.ui.define([
                         this._loadTravelRequest(oEmp.ID);
                     }, 800);
                 })
-                .catch(() => {
+                .catch((oError) => {
                     this.byId("proceedBtn").setBusy(false);
                     console.error("Binding error:", oError);
                     MessageBox.error("Service error. Please Check Connection", { title: "Error" });

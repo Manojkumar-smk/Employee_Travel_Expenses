@@ -1,7 +1,8 @@
 sap.ui.define([
     "sap/ui/core/UIComponent",
+    "sap/ui/model/json/jsonModel",
     "com/demo/approvalmaster/model/models"
-], (UIComponent, models) => {
+], function(UIComponent, jsonModel, models) {
     "use strict";
 
     return UIComponent.extend("com.demo.approvalmaster.Component", {
@@ -18,6 +19,13 @@ sap.ui.define([
 
             // set the device model
             this.setModel(models.createDeviceModel(), "device");
+
+            //appState Model
+            this.setModel(new jsonModel({
+                employeeId : null,
+                employeeName : null,
+                empId : null
+            }), "appState");
 
             // enable routing
             this.getRouter().initialize();
