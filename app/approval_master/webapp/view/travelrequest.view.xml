@@ -76,7 +76,7 @@
                         <HBox
                             wrap="Wrap"
                             class="sapUiSmallMarginEnd"
-                            width="200px"
+                            
                         >
                             <VBox
                                 class="sapUiSmallMarginEnd"
@@ -192,8 +192,8 @@
                 <items>
                     <ColumnListItem
                         press="onRowPress"
-                        type="Navigation"
-                    >
+                        type="Navigation">
+                    
                         <cells>
                             <Text text="{tripNumber}" />
                             <Text text="{employee/name}" />
@@ -201,7 +201,6 @@
                             <Text text="{project/Project}" />
                             <Text text="{purpose}" />
                             <Text text="{travelCity}" />
-                            <Text text="{tripNumber}" />
                             <Text
                                 text="{
                     path: 'fromDate',

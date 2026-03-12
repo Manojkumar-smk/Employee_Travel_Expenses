@@ -1,4 +1,3 @@
-const { formatters } = require("@sap/cds/lib/log/cds-log");
 
 sap.ui.define([
     "sap/ui/core/mvc/Controller",
@@ -45,7 +44,7 @@ sap.ui.define([
                     this.byId("proceedBtn").setBusy(false);
 
                     if (!aContexts.length) {
-                        this.byId("empErrText").setText('Employee ID "${sEmpId}" not found').setVisible(true);
+                        this.byId("empErrText").setText(`Employee ID "${sEmpId}" not found`).setVisible(true);
                         this.byId("empNameText").setVisible(false);
                         return;
                     }
@@ -106,7 +105,7 @@ sap.ui.define([
                 "Approved" : "Success",
                 "Rejected" : "Error"
             };
-            return map[sStatus] || None;
+            return map[sStatus] || "None";
         },
 
         onFilterChange: function() {
@@ -131,18 +130,21 @@ sap.ui.define([
             if(sStatus) {
                 aFilters.push( new Filter("status", FilterOperator.EQ, sStatus));
             }
+
+            oBinding.filter(aFilters);
         },
 
         onResetFilters: function() {
             this.byId("filterTripNo").setValue("");
-            this.byId("filterStatus").setValue("");
+            this.byId("filterStatus").setSelectedKey("");
+            this.byId("SearchField").setValue("");
             this.byId("travelRequestTable").getBinding("items").filter([]);
         },
 
         onRowPress: function(oEvent) {
             const oCtx = oEvent.getSource().getBindingContext();
             const sRequestId = oCtx.getProperty("ID");
-            this.getOwnerComponent.getRouter().navTo("RouteTravelExpenses", {
+            this.getOwnerComponent().getRouter().navTo("RouteTravelExpenses", {
                 requestId: sRequestId
             });
 
