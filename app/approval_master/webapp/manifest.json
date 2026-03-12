@@ -98,12 +98,23 @@
           "target": [
             "Targettravelrequest"
           ]
+        },
+        {
+          "name": "RouteTravelExpenses",
+          "pattern": "TravelExpenses/{requestId}",
+          "target": [
+            "TargetTravelExpenses"
+          ]
         }
       ],
       "targets": {
         "Targettravelrequest": {
           "id": "travelrequest",
           "name": "travelrequest"
+        },
+        "TargetTravelExpenses": {
+          "id": "travelexpenses",
+          "name": "travelexpenses"
         }
       }
     },

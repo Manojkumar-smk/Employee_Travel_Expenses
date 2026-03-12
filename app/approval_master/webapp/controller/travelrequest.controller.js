@@ -142,8 +142,17 @@ sap.ui.define([
         },
 
         onRowPress: function(oEvent) {
-            const oCtx = oEvent.getSource().getBindingContext();
+            const oItem = oEvent.getParameter("listItem");
+            const oCtx = oItem.getBindingContext();
+            if(!oCtx) {
+                console.warn("No Binding Context found");
+                return;
+            }
             const sRequestId = oCtx.getProperty("ID");
+            if (!sRequestId) {
+                console.warn("ID is undefined");
+                return;
+            }
             this.getOwnerComponent().getRouter().navTo("RouteTravelExpenses", {
                 requestId: sRequestId
             });

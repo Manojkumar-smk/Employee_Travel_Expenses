@@ -66,7 +66,7 @@
             />
         </headerContent>
         <content>
-            <VBox class="sapUiSmallMarginBeginEnd sapUiSmallMarginTop">
+            <VBox class="sapUiMediumMarginTop sapUiSmallMarginBeginEnd">
                 <Panel
                     headerText="Filter Travel Request"
                     expandable="true"
@@ -76,7 +76,6 @@
                         <HBox
                             wrap="Wrap"
                             class="sapUiSmallMarginEnd"
-                            
                         >
                             <VBox
                                 class="sapUiSmallMarginEnd"
@@ -125,17 +124,17 @@
 
             <Table
                 id="travelRequestTable"
-                class="sapUiMediumMarginBeginEnd"
+                class="sapUiMediumMarginTop sapUiSmallMarginBeginEnd sapMListTbl"
                 items="{ 
                 path: '/TravelRequest',
                 parameters: {
-                    $expand: 'employee,project'
+                    $expand: 'employee($select=name,department),project($select=Project)'
                 }
              }"
                 noDataText="No Travel Request Found"
                 growing="true"
                 growingThreshold="10"
-                itemPress="onRowPress"
+                selectionChange="onRowPress"
                 mode="SingleSelectMaster"
             >
                 <headerToolbar>
@@ -192,8 +191,8 @@
                 <items>
                     <ColumnListItem
                         press="onRowPress"
-                        type="Navigation">
-                    
+                        type="Navigation"
+                    >
                         <cells>
                             <Text text="{tripNumber}" />
                             <Text text="{employee/name}" />
@@ -201,21 +200,12 @@
                             <Text text="{project/Project}" />
                             <Text text="{purpose}" />
                             <Text text="{travelCity}" />
-                            <Text
-                                text="{
-                    path: 'fromDate',
-                    type: 'sap.ui.model.type.Date',
-                    formatOptions: { style: 'medium' }
-                }"
+                            <Text text="{fromDate}" />
+                            <Text text="{toDate}" />
+                            <ObjectNumber
+                                number="{incurredAmt}"
+                                unit="INR"
                             />
-                            <Text
-                                text="{
-                    path: 'toDate',
-                    type: 'sap.ui.model.type.Date',
-                    formatOptions: { style : 'medium' }
-                }"
-                            />
-                            <Text text="{incurredAmt}" />
                             <ObjectNumber
                                 number="{approvedAmt}"
                                 unit="INR"

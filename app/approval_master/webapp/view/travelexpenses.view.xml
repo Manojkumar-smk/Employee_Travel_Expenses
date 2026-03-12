@@ -1,0 +1,10 @@
+<mvc:View
+    controllerName="com.demo.approvalmaster.controller.travelexpenses"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+>
+<Page id="expPage" title="Travel Expenses Approval" showNavButton="true" navButtonPress="onNavBack">
+
+</Page>
+</mvc:View>
