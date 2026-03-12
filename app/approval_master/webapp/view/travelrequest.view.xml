@@ -1,26 +1,241 @@
-<mvc:View controllerName="com.demo.approvalmaster.controller.travelrequest"
+<mvc:View
+    controllerName="com.demo.approvalmaster.controller.travelrequest"
     xmlns:mvc="sap.ui.core.mvc"
     xmlns="sap.m"
-    xmlns:core="sap.ui.core">
-        <Page id="page" title="Travel Request Aproval">
+    xmlns:core="sap.ui.core"
+>
+    <Page
+        id="page"
+        title="Travel Request Aproval"
+    >
         <dependents>
-    <Dialog id="empDialog" title="Enter Employee ID" type="Message" 
-    state="Information" draggable="true" resizable="true">
-    <content>
-    <VBox class="sapUiSmallMargin" width="300px">
-    <Label text="Employee ID" required="true" class="sapUiSmallMarginBottom"/>
-    <Input id="empIdInput" width="100%"  placeholder="e.g. E-20609" liveChange="onEmpIdLiveChange" />
-    <Text id="empNameText" text="" class="sapUiSmallMarginTop" visible="false"/>
-    <Text id="empErrText" text="" class="sapUiSmallMarginTop" visible="false" />
-    </VBox>
-    </content>
-    <buttons>
-    <Button id="proceedBtn" text="Proceed" type="Emphasized" enabled="false" press="onProceed"></Button>
-    </buttons>
-    </Dialog>
-</dependents>
-<content>
+            <Dialog
+                id="empDialog"
+                title="Enter Employee ID"
+                type="Message"
+                state="Information"
+                draggable="true"
+                resizable="true"
+            >
+                <content>
+                    <VBox
+                        class="sapUiSmallMargin"
+                        width="300px"
+                    >
+                        <Label
+                            text="Employee ID"
+                            required="true"
+                            class="sapUiSmallMarginBottom"
+                        />
+                        <Input
+                            id="empIdInput"
+                            width="100%"
+                            placeholder="e.g. E-20609"
+                            liveChange="onEmpIdLiveChange"
+                        />
+                        <Text
+                            id="empNameText"
+                            text=""
+                            class="sapUiSmallMarginTop"
+                            visible="false"
+                        />
+                        <Text
+                            id="empErrText"
+                            text=""
+                            class="sapUiSmallMarginTop"
+                            visible="false"
+                        />
+                    </VBox>
+                </content>
+                <buttons>
+                    <Button
+                        id="proceedBtn"
+                        text="Proceed"
+                        type="Emphasized"
+                        enabled="false"
+                        press="onProceed"
+                    />
+                </buttons>
+            </Dialog>
+        </dependents>
+        <headerContent>
+            <Button
+                text="Change User"
+                icon="sap-icon://person-placeholder"
+                press="onChangeUser"
+            />
+        </headerContent>
+        <content>
+            <VBox class="sapUiSmallMarginBeginEnd sapUiSmallMarginTop">
+                <Panel
+                    headerText="Filter Travel Request"
+                    expandable="true"
+                    expanded="true"
+                >
+                    <content>
+                        <HBox
+                            wrap="Wrap"
+                            class="sapUiSmallMarginEnd"
+                            width="200px"
+                        >
+                            <VBox
+                                class="sapUiSmallMarginEnd"
+                                width="200px"
+                            >
+                                <Label text="Trip Number" />
+                                <Input
+                                    id="filterTripNo"
+                                    placeholder="e.g. T-001"
+                                    liveChange="onFilterChange"
+                                />
+                            </VBox>
+                            <VBox
+                                class="sapUiSmallMarginEnd"
+                                width="200px"
+                            >
+                                <Label text="Status" />
+                                <Select
+                                    id="filterStatus"
+                                    change="onFilterChange"
+                                >
+                                    <items>
+                                        <core:Item
+                                            key=""
+                                            text="ALL"
+                                        />
+                                        <core:Item
+                                            key="Pending"
+                                            text="Pending"
+                                        />
+                                        <core:Item
+                                            key="Approved"
+                                            text="Approved"
+                                        />
+                                        <core:Item
+                                            key="Rejected"
+                                            text="Rejected"
+                                        />
+                                    </items>
+                                </Select>
+                            </VBox>
+                        </HBox>
+                    </content>
+                </Panel>
+            </VBox>
 
-</content>
+            <Table
+                id="travelRequestTable"
+                class="sapUiMediumMarginBeginEnd"
+                items="{ 
+                path: '/TravelRequest',
+                parameters: {
+                    $expand: 'employee,project'
+                }
+             }"
+                noDataText="No Travel Request Found"
+                growing="true"
+                growingThreshold="10"
+                itemPress="onRowPress"
+                mode="SingleSelectMaster"
+            >
+                <headerToolbar>
+                    <Toolbar>
+                        <Title text="Travel Requests" />
+                        <ToolbarSpacer />
+                        <SearchField
+                            id="SearchField"
+                            width="250px"
+                            placeholder="Search by purpose..."
+                            search="onSearch"
+                            liveChange="onSearch"
+                        />
+                    </Toolbar>
+                </headerToolbar>
+                <columns>
+                    <Column>
+                        <Text text="Trip No" />
+                    </Column>
+                    <Column>
+                        <Text text="Employee" />
+                    </Column>
+                    <Column>
+                        <Text text="Department" />
+                    </Column>
+                    <Column>
+                        <Text text="Project" />
+                    </Column>
+                    <Column>
+                        <Text text="Purpose" />
+                    </Column>
+                    <Column>
+                        <Text text="Travel City" />
+                    </Column>
+                    <Column>
+                        <Text text="From Date" />
+                    </Column>
+                    <Column>
+                        <Text text="To Date" />
+                    </Column>
+                    <Column>
+                        <Text text="Incurred Amount" />
+                    </Column>
+                    <Column>
+                        <Text text="Approved Amount Amount" />
+                    </Column>
+                    <Column>
+                        <Text text="Eligible Amount" />
+                    </Column>
+                    <Column>
+                        <Text text="Status" />
+                    </Column>
+                </columns>
+                <items>
+                    <ColumnListItem
+                        press="onRowPress"
+                        type="Navigation"
+                    >
+                        <cells>
+                            <Text text="{tripNumber}" />
+                            <Text text="{employee/name}" />
+                            <Text text="{employee/department}" />
+                            <Text text="{project/Project}" />
+                            <Text text="{purpose}" />
+                            <Text text="{travelCity}" />
+                            <Text text="{tripNumber}" />
+                            <Text
+                                text="{
+                    path: 'fromDate',
+                    type: 'sap.ui.model.type.Date',
+                    formatOptions: { style: 'medium' }
+                }"
+                            />
+                            <Text
+                                text="{
+                    path: 'toDate',
+                    type: 'sap.ui.model.type.Date',
+                    formatOptions: { style : 'medium' }
+                }"
+                            />
+                            <Text text="{incurredAmt}" />
+                            <ObjectNumber
+                                number="{approvedAmt}"
+                                unit="INR"
+                            />
+                            <ObjectNumber
+                                number="{eligibleAmt}"
+                                unit="INR"
+                            />
+                            <ObjectStatus
+                                text="{status}"
+                                state="{
+                    path: 'status',
+                    formatter: '.formatStatus'
+                }"
+                            />
+                        </cells>
+                    </ColumnListItem>
+                </items>
+            </Table>
+        </content>
     </Page>
 </mvc:View>

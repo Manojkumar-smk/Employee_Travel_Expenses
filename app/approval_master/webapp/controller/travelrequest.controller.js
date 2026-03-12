@@ -1,3 +1,5 @@
+const { formatters } = require("@sap/cds/lib/log/cds-log");
+
 sap.ui.define([
     "sap/ui/core/mvc/Controller",
     "sap/ui/model/Filter",
@@ -97,6 +99,53 @@ sap.ui.define([
             this.byId("empNameText").setVisible(false).setText("");
             this.byId("proceedBtn").setEnabled(false);
             this.byId("empDialog").open();
+        },
+        formatStatus: function(sStatus) {
+            const map = {
+                "Pending" : "Warning",
+                "Approved" : "Success",
+                "Rejected" : "Error"
+            };
+            return map[sStatus] || None;
+        },
+
+        onFilterChange: function() {
+            this._applyFilters();
+        },
+
+        onSearch: function(oEvent) {
+            this._applyFilters();
+        },
+
+        _applyFilters: function() {
+            const oTable = this.byId("travelRequestTable");
+            const oBinding = oTable.getBinding("items");
+            const aFilters = [];
+
+            const sTripNo = this.byId("filterTripNo").getValue().trim();
+            if(sTripNo) {
+                aFilters.push( new Filter("tripNumber", FilterOperator.Contains, sTripNo));               
+            }
+
+            const sStatus = this.byId("filterStatus").getSelectedKey();
+            if(sStatus) {
+                aFilters.push( new Filter("status", FilterOperator.EQ, sStatus));
+            }
+        },
+
+        onResetFilters: function() {
+            this.byId("filterTripNo").setValue("");
+            this.byId("filterStatus").setValue("");
+            this.byId("travelRequestTable").getBinding("items").filter([]);
+        },
+
+        onRowPress: function(oEvent) {
+            const oCtx = oEvent.getSource().getBindingContext();
+            const sRequestId = oCtx.getProperty("ID");
+            this.getOwnerComponent.getRouter().navTo("RouteTravelExpenses", {
+                requestId: sRequestId
+            });
+
         }
     });
 });
