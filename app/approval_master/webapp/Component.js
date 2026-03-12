@@ -1,8 +1,8 @@
 sap.ui.define([
     "sap/ui/core/UIComponent",
-    "sap/ui/model/json/JsonModel",
+    "sap/ui/model/json/JSONModel",
     "com/demo/approvalmaster/model/models"
-], function(UIComponent, JsonModel, models) {
+], function(UIComponent, JSONModel, models) {
     "use strict";
 
     return UIComponent.extend("com.demo.approvalmaster.Component", {
@@ -21,7 +21,7 @@ sap.ui.define([
             this.setModel(models.createDeviceModel(), "device");
 
             //appState Model
-            this.setModel(new JsonModel({
+            this.setModel(new JSONModel({
                 employeeId : null,
                 employeeName : null,
                 empId : null
