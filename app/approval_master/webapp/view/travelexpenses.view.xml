@@ -2,9 +2,221 @@
     controllerName="com.demo.approvalmaster.controller.travelexpenses"
     xmlns:mvc="sap.ui.core.mvc"
     xmlns="sap.m"
+    xmlns:form="sap.ui.layout.form"
     xmlns:core="sap.ui.core"
->
-<Page id="expPage" title="Travel Expenses Approval" showNavButton="true" navButtonPress="onNavBack">
+    displayBlock="true">
 
-</Page>
+    <Page
+        id="travelExpensesPage"
+        title="Travel Expenses"
+        showNavButton="true"
+        navButtonPress=".onNavBack"
+        busy="{viewModel>/busy}">
+
+        <headerContent>
+            <ObjectStatus
+                title="Status"
+                text="{viewModel>/requestHeader/status}"
+                state="{= ${viewModel>/requestHeader/status} === 'Approved' ? 'Success' :
+                           ${viewModel>/requestHeader/status} === 'Rejected' ? 'Error'  : 'Warning' }"/>
+        </headerContent>
+
+        <content>
+
+            <!-- Request Info Panel -->
+            <Panel
+                id="requestInfoPanel"
+                headerText="Request Details"
+                expandable="true"
+                expanded="true"
+                class="sapUiSmallMargin">
+
+                <form:SimpleForm
+                    id="requestInfoForm"
+                    editable="false"
+                    layout="ResponsiveGridLayout"
+                    labelSpanL="4" labelSpanM="4"
+                    columnsL="2"   columnsM="2">
+
+                    <Label text="Trip Number"/>
+                    <Text text="{viewModel>/requestHeader/tripNumber}"/>
+
+                    <Label text="Purpose"/>
+                    <Text text="{viewModel>/requestHeader/purpose}"/>
+
+                    <Label text="Travel City"/>
+                    <Text text="{viewModel>/requestHeader/travelCity}"/>
+
+                    <Label text="From Date"/>
+                    <Text text="{viewModel>/requestHeader/fromDate}"/>
+
+                    <Label text="To Date"/>
+                    <Text text="{viewModel>/requestHeader/toDate}"/>
+
+                    <Label text="Employee"/>
+                    <Text text="{viewModel>/requestHeader/employee/name}"/>
+
+                    <Label text="Department"/>
+                    <Text text="{viewModel>/requestHeader/employee/department}"/>
+
+                    <Label text="Project"/>
+                    <Text text="{viewModel>/requestHeader/project/Project}"/>
+
+                    <Label text="Rejection Reason"/>
+                    <Text text="{viewModel>/requestHeader/rejectionReason}"/>
+
+                </form:SimpleForm>
+            </Panel>
+
+            <!-- Amount Summary Bar -->
+            <HBox
+                id="amountSummaryBar"
+                justifyContent="SpaceBetween"
+                class="sapUiSmallMarginBegin sapUiSmallMarginEnd sapUiSmallMarginBottom">
+
+                <VBox alignItems="Center">
+                    <Label text="Incurred Amount"/>
+                    <ObjectNumber
+                        number="{viewModel>/requestHeader/incurredAmt}"
+                        unit="INR"
+                        emphasized="false"/>
+                </VBox>
+
+                <VBox alignItems="Center">
+                    <Label text="Eligible Amount"/>
+                    <ObjectNumber
+                        number="{viewModel>/requestHeader/eligibleAmt}"
+                        unit="INR"
+                        emphasized="false"/>
+                </VBox>
+
+                <VBox alignItems="Center">
+                    <Label text="Approved Amount"/>
+                    <ObjectNumber
+                        number="{viewModel>/requestHeader/approvedAmt}"
+                        unit="INR"
+                        state="Success"
+                        emphasized="true"/>
+                </VBox>
+
+            </HBox>
+
+            <!-- Expenses Table -->
+            <Table
+                id="expensesTable"
+                items="{expenses>/items}"
+                noDataText="No expenses found for this request."
+                sticky="ColumnHeaders,HeaderToolbar"
+                class="sapUiSmallMarginBegin sapUiSmallMarginEnd">
+
+                <headerToolbar>
+                    <OverflowToolbar>
+                        <Title text="Expense Bills" level="H4"/>
+                        <ToolbarSpacer/>
+                        <Button
+                            text="Approve All"
+                            type="Accept"
+                            icon="sap-icon://accept"
+                            press=".onApproveAll"/>
+                        <Button
+                            text="Reject All"
+                            type="Reject"
+                            icon="sap-icon://decline"
+                            press=".onRejectAll"/>
+                    </OverflowToolbar>
+                </headerToolbar>
+
+                <columns>
+                    <Column width="7rem">
+                        <Text text="Bill No"/>
+                    </Column>
+                    <Column width="8rem">
+                        <Text text="Category"/>
+                    </Column>
+                    <Column width="10rem">
+                        <Text text="Description"/>
+                    </Column>
+                    <Column width="7rem" hAlign="End">
+                        <Text text="Amount (₹)"/>
+                    </Column>
+                    <Column width="7rem" hAlign="Center">
+                        <Text text="Date"/>
+                    </Column>
+                    <Column width="7rem" hAlign="Center">
+                        <Text text="Status"/>
+                    </Column>
+                    <Column width="10rem" hAlign="Center">
+                        <Text text="Action"/>
+                    </Column>
+                </columns>
+
+                <items>
+                    <ColumnListItem>
+                        <cells>
+
+                            <Text text="{expenses>billNo}"/>
+
+                            <Text text="{expenses>category/category}"/>
+
+                            <Text
+                                text="{expenses>description}"
+                                wrapping="false"
+                                tooltip="{expenses>description}"/>
+
+                            <ObjectNumber
+                                number="{expenses>amount}"
+                                unit="INR"
+                                emphasized="false"/>
+
+                            <Text text="{expenses>date}"/>
+
+                            <ObjectStatus
+                                text="{= ${expenses>approved} === true  ? 'Approved' :
+                                          ${expenses>approved} === false ? 'Rejected' : 'Pending' }"
+                                state="{= ${expenses>approved} === true  ? 'Success'  :
+                                          ${expenses>approved} === false ? 'Error'    : 'Warning' }"/>
+
+                            <HBox justifyContent="Center">
+                                <Button
+                                    text="Approve"
+                                    type="Accept"
+                                    icon="sap-icon://accept"
+                                    press=".onApproveBill"
+                                    enabled="{= ${expenses>approved} !== true }"
+                                    class="sapUiTinyMarginEnd"/>
+                                <Button
+                                    text="Reject"
+                                    type="Reject"
+                                    icon="sap-icon://decline"
+                                    press=".onRejectBill"
+                                    enabled="{= ${expenses>approved} !== false }"/>
+                            </HBox>
+
+                        </cells>
+                    </ColumnListItem>
+                </items>
+
+            </Table>
+
+        </content>
+
+        <footer>
+            <OverflowToolbar>
+                <ToolbarSpacer/>
+                <Button
+                    text="Approve Request"
+                    type="Accept"
+                    icon="sap-icon://accept"
+                    press=".onApprove"
+                    class="sapUiTinyMarginEnd"/>
+                <Button
+                    text="Reject Request"
+                    type="Reject"
+                    icon="sap-icon://decline"
+                    press=".onReject"/>
+            </OverflowToolbar>
+        </footer>
+
+    </Page>
+
 </mvc:View>
