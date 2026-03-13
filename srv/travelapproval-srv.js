@@ -5,15 +5,19 @@ module.exports = class TravelApprovalService extends cds.ApplicationService {
     async init() {
         const { TravelApproval, TravelRequest, TravelExpenses } = this.entities;
 
-        this.on('approveExpenses', TravelExpenses, async (req) => {
+        this.on('approveExpense', TravelExpenses, async (req) => {
             const { ID } = req.params[0];
+            const { approver_ID, remarks } = req.data;
+
+            if(!approver_ID)
+                return req.error(400, `Approver ID is required.`);
 
             const oExpense = await SELECT.one.from(TravelExpenses).where({ ID });
             if (!oExpense)
                 return req.error(404, `Expense ${ID} not found.`);
 
             if (oExpense.approved === true)
-                return req.error(400, `Bill ${oExpense.billNo} is already approved.`);
+                return req.error(404, `Bill ${oExpense.billNo} is already approved.`);
 
             const oRequest = await SELECT.one.from(TravelRequest).where({ ID: oExpense.travel_ID })
                 .columns('ID', 'status');
@@ -42,8 +46,11 @@ module.exports = class TravelApprovalService extends cds.ApplicationService {
             return SELECT.one.from(TravelExpenses).where({ ID });
         });
 
-        this.on('rejectExpenses', TravelExpenses, async (req) => {
+        this.on('rejectExpense', TravelExpenses, async (req) => {
             const { ID } = req.params[0];
+            const { approver_ID, remarks } = req.data;
+
+            if(!approver_ID) return req.Error(400, `Approver ID is required.`);
 
             const oExpense = await SELECT.one.from(TravelExpenses).where({ ID });
 
@@ -77,7 +84,7 @@ module.exports = class TravelApprovalService extends cds.ApplicationService {
 
         });
 
-        async function _recalcApprovedAmt(sTravelID) {
+        const _recalcApprovedAmt = async (sTravelID) => {
             aExpenses = await SELECT.from(TravelExpenses).where({ travel_ID: sTravelID })
                 .columns('amount', 'approved');
 
@@ -87,7 +94,9 @@ module.exports = class TravelApprovalService extends cds.ApplicationService {
             await UPDATE(TravelRequest)
                 .set({ approvedAmt: nApprovedAmt })
                 .where({ ID: sTravelID });
-        }
+                return nApprovedAmt;
+        };
+
         return super.init();
     }
 }

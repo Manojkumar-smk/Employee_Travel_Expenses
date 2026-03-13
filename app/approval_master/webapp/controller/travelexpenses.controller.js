@@ -88,7 +88,9 @@ sap.ui.define([
         },
 
         _getApproverId: function () {
-            return this.getOwnerComponent().getModel("appState").getProperty("/employeeId");
+            var sId = this.getOwnerComponent().getModel("appState").getProperty("/employeeId");
+            console.log(sId);
+            return sId;
         },
 
         onApproveBill: function (oEvent) {
@@ -104,7 +106,7 @@ sap.ui.define([
                     onClose: function (sAction) {
                         if (sAction === MessageBox.Action.YES) {
                             this._callExpenseAction(
-                                "approveExpenses",
+                                "approveExpense",
                                 oExpense,
                                 oContext
                             );
@@ -128,7 +130,7 @@ sap.ui.define([
                     onClose: function (sAction) {
                         if (sAction === MessageBox.Action.YES) {
                             this._callExpenseAction(
-                                "rejectExpenses",
+                                "rejectExpense",
                                 oExpense,
                                 oContext
                             );
