@@ -10,6 +10,7 @@ sap.ui.define([
 
     return Controller.extend("com.demo.approvalmaster.controller.travelrequest", {
         onInit() {
+            this._sManagerId = null;
             this.byId("empDialog").open();
         },
         onEmpIdLiveChange: function (oEvent) {
@@ -73,78 +74,96 @@ sap.ui.define([
         },
 
         _loadTravelRequest: function (sManagerId) {
+            this._sManagerId = sManagerId;
+            this._applyFilters();
+        },
+        _applyFilters: function () {
             const oTable = this.byId("travelRequestTable");
-            if (!oTable) {
-                console.warn("Table not Found");
-                return;
-            }
+            if (!oTable) return;
+
             const oBinding = oTable.getBinding("items");
             if (!oBinding) {
-                console.warn("Table binding not ready");
+                console.warn("Table Binding not ready");
                 return;
             }
-            const oFilter = new Filter(
-                "project/projManager_ID",
-                FilterOperator.EQ,
-                sManagerId
-            );
-            oBinding.filter([
-                oFilter
-            ]);
+
+            const aFilters = [];
+
+            if (this._sManagerId) {
+                aFilters.push(new Filter(
+                    "project/projManager_ID",
+                    FilterOperator.EQ,
+                    this._sManagerId
+                ));
+            }
+            const sTripNo = this.byId("filterTripNo").getValue().trim();
+            if (sTripNo) {
+                aFilters.push(new Filter("tripNumber", FilterOperator.Contains, sTripNo));
+            }
+
+            const sStatus = this.byId("filterStatus").getSelectedKey();
+            if (sStatus) {
+                aFilters.push(new Filter("status", FilterOperator.EQ, sStatus));
+            }
+
+            const sSearch = this.byId("SearchField").getValue().trim();
+            if (sSearch) {
+                aFilters.push(new Filter("purpose", FilterOperator.Contains, sSearch));
+            }
+            if (aFilters.length > 1) {
+                oBinding.filter([new Filter({ filters: aFilters, and: true })]);
+
+            } else {
+                oBinding.filter(aFilters);
+            }
         },
+
         onChangeUser: function () {
+
+            this.sManagerId = null;
+            const oBinding = this.byId("travelRequestTable").getBinding("items");
+            if(oBinding) oBinding.filter([]);
+
+            this.byId("filterTripNo").setValue("");
+            this.byId("filterStatus").setSelectedKey("");
+            this.byId("SearchField").setValue("");
+
             this.byId("empIdInput").setValue("");
             this.byId("empNameText").setVisible(false).setText("");
             this.byId("empNameText").setVisible(false).setText("");
             this.byId("proceedBtn").setEnabled(false);
+            if (!this.byId("empDialog").isOpen()){
             this.byId("empDialog").open();
+         }
         },
-        formatStatus: function(sStatus) {
+        formatStatus: function (sStatus) {
             const map = {
-                "Pending" : "Warning",
-                "Approved" : "Success",
-                "Rejected" : "Error"
+                "Pending": "Warning",
+                "Approved": "Success",
+                "Rejected": "Error"
             };
             return map[sStatus] || "None";
         },
 
-        onFilterChange: function() {
+        onFilterChange: function () {
             this._applyFilters();
         },
 
-        onSearch: function(oEvent) {
+        onSearch: function (oEvent) {
             this._applyFilters();
         },
 
-        _applyFilters: function() {
-            const oTable = this.byId("travelRequestTable");
-            const oBinding = oTable.getBinding("items");
-            const aFilters = [];
-
-            const sTripNo = this.byId("filterTripNo").getValue().trim();
-            if(sTripNo) {
-                aFilters.push( new Filter("tripNumber", FilterOperator.Contains, sTripNo));               
-            }
-
-            const sStatus = this.byId("filterStatus").getSelectedKey();
-            if(sStatus) {
-                aFilters.push( new Filter("status", FilterOperator.EQ, sStatus));
-            }
-
-            oBinding.filter(aFilters);
-        },
-
-        onResetFilters: function() {
+        onResetFilters: function () {
             this.byId("filterTripNo").setValue("");
             this.byId("filterStatus").setSelectedKey("");
             this.byId("SearchField").setValue("");
             this.byId("travelRequestTable").getBinding("items").filter([]);
         },
 
-        onRowPress: function(oEvent) {
+        onRowPress: function (oEvent) {
             const oItem = oEvent.getParameter("listItem");
             const oCtx = oItem.getBindingContext();
-            if(!oCtx) {
+            if (!oCtx) {
                 console.warn("No Binding Context found");
                 return;
             }

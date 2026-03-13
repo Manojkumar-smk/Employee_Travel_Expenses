@@ -23,8 +23,8 @@ service TravelApprovalService {
             expenses : redirected to TravelExpenses,
         }
         actions {
-            action approveRequest()                            returns TravelApproval;
-            action rejectRequest(rejectionReason: String(200)) returns TravelApproval;
+            action approveRequest(approver_ID : UUID)                            returns TravelApproval;
+            action rejectRequest(approver_ID : UUID, rejectionReason: String(200)) returns TravelApproval;
         };
 
     entity TravelExpenses as
@@ -33,8 +33,8 @@ service TravelApprovalService {
             category : redirected to Categories,
         }
         actions {
-            action approveExpenses() returns TravelExpenses;
-            action rejectExpenses()  returns TravelExpenses;
+            action approveExpenses(approver_ID : UUID, remarks : String(200) ) returns TravelExpenses;
+            action rejectExpenses(approver_ID : UUID, remarks : String(200) )  returns TravelExpenses;
         };
 
 }

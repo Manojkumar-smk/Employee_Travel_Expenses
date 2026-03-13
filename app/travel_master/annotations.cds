@@ -14,9 +14,9 @@ annotate service.TravelRequest with @(
                 Value: employee_ID,
             },
             {
-                $Type: 'UI.DataField',
-                Value: project_ID,
-                Label : 'Project ID',
+                $Type : 'UI.DataField',
+                Value : project_ID,
+                Label : 'project_ID',
             },
             {
                 $Type: 'UI.DataField',
@@ -322,44 +322,28 @@ annotate service.TravelRequest with {
 annotate service.TravelRequest with {
     incurredAmt @Common.FieldControl: #ReadOnly
 };
-annotate TravelRequestService.TravelRequest with {
-    project @(
-        Common.Label                   : 'Project',
-        Common.Text                    : project.Project, 
-        Common.TextArrangement         : #TextOnly,
-        Common.ValueList               : {
-            $Type         : 'Common.ValueListType',
-            CollectionPath: 'ProjectAssignment',
-            Parameters    : [
-                // 1. DYNAMIC FILTER: Takes employee_ID from TravelRequest 
-                // and filters ProjectAssignment records by employee_ID.
-                {
-                    $Type            : 'Common.ValueListParameterIn',
-                    LocalDataProperty: employee_ID,
-                    ValueListProperty: 'employee_ID',
-                },
-                // 2. SELECTION: Returns the selected project_ID back to the form.
-                {
-                    $Type            : 'Common.ValueListParameterOut',
-                    LocalDataProperty: project_ID,
-                    ValueListProperty: 'project_ID',
-                },
-                // 3. DISPLAY: Shows the readable project name in the search help.
-                {
-                    $Type            : 'Common.ValueListParameterDisplayOnly',
-                    ValueListProperty: 'project/Project',
-                },
-            ],
-            Label         : 'Assigned Projects Only',
-        },
-        Common.ValueListWithFixedValues: false
-    )
-};
-
-
 annotate service.Projects with {
     Project @(
         Common.Text : description,
         Common.Text.@UI.TextArrangement : #TextOnly,
 )};
+
+annotate service.TravelRequest with {
+    project @(
+        Common.ExternalID : project.Project,
+        Common.ValueList : {
+            $Type : 'Common.ValueListType',
+            CollectionPath : 'Projects',
+            Parameters : [
+                {
+                    $Type : 'Common.ValueListParameterInOut',
+                    LocalDataProperty : project_ID,
+                    ValueListProperty : 'ID',
+                },
+            ],
+            Label : 'Project Selection',
+        },
+        Common.ValueListWithFixedValues : true,
+    )
+};
 
