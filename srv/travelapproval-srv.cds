@@ -21,12 +21,20 @@ service TravelApprovalService {
             employee : redirected to Employees,
             project  : redirected to Projects,
             expenses : redirected to TravelExpenses,
+        }
+        actions {
+            action approveRequest()                            returns TravelApproval;
+            action rejectRequest(rejectionReason: String(200)) returns TravelApproval;
         };
 
     entity TravelExpenses as
         projection on a1f6f1b3.TravelExpenses {
             *,
             category : redirected to Categories,
+        }
+        actions {
+            action approveExpenses() returns TravelExpenses;
+            action rejectExpenses()  returns TravelExpenses;
         };
 
 }
