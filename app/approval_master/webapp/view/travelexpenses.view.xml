@@ -13,14 +13,6 @@
         navButtonPress=".onNavBack"
         busy="{viewModel>/busy}">
 
-        <headerContent>
-            <ObjectStatus
-                title="Status"
-                text="{viewModel>/requestHeader/status}"
-                state="{= ${viewModel>/requestHeader/status} === 'Approved' ? 'Success' :
-                           ${viewModel>/requestHeader/status} === 'Rejected' ? 'Error'  : 'Warning' }"/>
-        </headerContent>
-
         <content>
 
             <!-- Request Info Panel -->
@@ -108,23 +100,6 @@
                 noDataText="No expenses found for this request."
                 sticky="ColumnHeaders,HeaderToolbar"
                 class="sapUiSmallMarginBegin sapUiSmallMarginEnd">
-
-                <headerToolbar>
-                    <OverflowToolbar>
-                        <Title text="Expense Bills" level="H4"/>
-                        <ToolbarSpacer/>
-                        <Button
-                            text="Approve All"
-                            type="Accept"
-                            icon="sap-icon://accept"
-                            press=".onApproveAll"/>
-                        <Button
-                            text="Reject All"
-                            type="Reject"
-                            icon="sap-icon://decline"
-                            press=".onRejectAll"/>
-                    </OverflowToolbar>
-                </headerToolbar>
 
                 <columns>
                     <Column width="7rem">
