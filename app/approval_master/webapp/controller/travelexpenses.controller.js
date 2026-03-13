@@ -1,11 +1,10 @@
-const { func } = require("@sap/cds/lib/ql/cds-ql");
-
 sap.ui.define([
     "sap/ui/core/mvc/Controller",
     "sap/ui/model/json/JSONModel",
     "sap/m/MessageBox",
-    "sap/ui/core/routing/History"
-], (Controller, JSONModel, MessageBox, History) => {
+    "sap/ui/core/routing/History",
+    "sap/m/MessageToast"
+], (Controller, JSONModel, MessageBox, History, MessageToast) => {
     "use strict";
 
     return Controller.extend("com.demo.approvalmaster.controller.travelexpenses", {
@@ -139,7 +138,7 @@ sap.ui.define([
             );
         },
 
-        _callExpenseAction: function () {
+        _callExpenseAction: function (sActionName, oExpense, oContext) {
             var oView = this.getView();
             var oModel = oView.getModel();
             var oViewModel = oView.getModel("viewModel");

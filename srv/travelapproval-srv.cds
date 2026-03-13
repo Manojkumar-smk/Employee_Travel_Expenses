@@ -33,8 +33,8 @@ service TravelApprovalService {
             category : redirected to Categories,
         }
         actions {
-            action approveExpenses(approver_ID : UUID, remarks : String(200) ) returns TravelExpenses;
-            action rejectExpenses(approver_ID : UUID, remarks : String(200) )  returns TravelExpenses;
+            action approveExpense(approver_ID : UUID, remarks : String(200) ) returns TravelExpenses;
+            action rejectExpense(approver_ID : UUID, remarks : String(200) )  returns TravelExpenses;
         };
 
 }
