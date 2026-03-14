@@ -32,9 +32,10 @@ module.exports = class TravelApprovalService extends cds.ApplicationService {
 
             await _recalcApprovedAmt(oExpense.travel_ID);
 
-            const sToday = new Date().toISOString().split('T');
+            const sToday = new Date();
 
             await INSERT.into(TravelApproval).entries({
+                ID : cds.utils.uuid(),
                 approver_ID: approver_ID,
                 travel_ID: oExpense.travel_ID,
                 approvedAmt: oExpense.approvedAmt,
@@ -72,6 +73,7 @@ module.exports = class TravelApprovalService extends cds.ApplicationService {
             await _recalcApprovedAmt(oExpense.travel_ID);
 
             await INSERT.into(TravelApproval).entries({
+                ID : cds.utils.uuid(),
                 approver_ID: approver_ID,
                 travel_ID: oExpense.travel_ID,
                 approvedAmt: oExpense.approvedAmt,
@@ -85,7 +87,7 @@ module.exports = class TravelApprovalService extends cds.ApplicationService {
         });
 
         const _recalcApprovedAmt = async (sTravelID) => {
-            aExpenses = await SELECT.from(TravelExpenses).where({ travel_ID: sTravelID })
+            const aExpenses = await SELECT.from(TravelExpenses).where({ travel_ID: sTravelID })
                 .columns('amount', 'approved');
 
             const nApprovedAmt = aExpenses.filter(e => e.approved === true)
