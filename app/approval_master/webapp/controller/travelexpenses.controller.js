@@ -182,13 +182,15 @@ sap.ui.define([
                         oView.getModel("expenses").setProperty("/items", aItems);
                     }
                   
-                    this._refreshHeaderAmounts();
+                    // this._refreshHeaderAmounts();
+                    this._loadData(this._sRequestId);
                 }.bind(this))
                 .catch(function (oError) {
                     oViewModel.setProperty("/busy", false);
                     var sMsg = this._extractErrorMessage(oError);
                     MessageBox.error("Action failed:\n" + sMsg);
                 }.bind(this));
+
         },
 
         _refreshHeaderAmounts: function () {
