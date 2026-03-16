@@ -175,23 +175,6 @@
 
         </content>
 
-        <footer>
-            <OverflowToolbar>
-                <ToolbarSpacer/>
-                <Button
-                    text="Approve Request"
-                    type="Accept"
-                    icon="sap-icon://accept"
-                    press=".onApprove"
-                    class="sapUiTinyMarginEnd"/>
-                <Button
-                    text="Reject Request"
-                    type="Reject"
-                    icon="sap-icon://decline"
-                    press=".onReject"/>
-            </OverflowToolbar>
-        </footer>
-
     </Page>
 
 </mvc:View>

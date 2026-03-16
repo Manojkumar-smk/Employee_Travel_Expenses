@@ -222,9 +222,6 @@ sap.ui.define([
                     .navTo("Routetravelrequest", {}, true);
             }
         },
-
-        onApprove: function () { },
-        onReject: function () { },
         _extractErrorMessage: function (oError) {
             try {
                 var oBody = JSON.parse(oError.responseText || oError.message);
