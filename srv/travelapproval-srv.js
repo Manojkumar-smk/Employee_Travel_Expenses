@@ -9,7 +9,7 @@ module.exports = class TravelApprovalService extends cds.ApplicationService {
             const { ID } = req.params[0];
             const { approver_ID, remarks } = req.data;
 
-            if(!approver_ID)
+            if (!approver_ID)
                 return req.error(400, `Approver ID is required.`);
 
             const oExpense = await SELECT.one.from(TravelExpenses).where({ ID });
@@ -35,11 +35,11 @@ module.exports = class TravelApprovalService extends cds.ApplicationService {
             const sToday = new Date();
 
             await INSERT.into(TravelApproval).entries({
-                ID : cds.utils.uuid(),
+                ID: cds.utils.uuid(),
                 approver_ID: approver_ID,
                 travel_ID: oExpense.travel_ID,
                 approvedAmt: oExpense.approvedAmt,
-                remarks: remarks || `Bill ${oExpense.billNo} approved.`,
+                remarks: oExpense.billNo,
                 actionDate: sToday,
                 status: 'Approved'
             })
@@ -51,7 +51,7 @@ module.exports = class TravelApprovalService extends cds.ApplicationService {
             const { ID } = req.params[0];
             const { approver_ID, remarks } = req.data;
 
-            if(!approver_ID) return req.Error(400, `Approver ID is required.`);
+            if (!approver_ID) return req.error(400, `Approver ID is required.`);
 
             const oExpense = await SELECT.one.from(TravelExpenses).where({ ID });
 
@@ -70,14 +70,16 @@ module.exports = class TravelApprovalService extends cds.ApplicationService {
 
             await UPDATE(TravelExpenses).set({ approved: false }).where({ ID })
 
-            const nApprovedAmt  = await _recalcApprovedAmt(oExpense.travel_ID);
+            const nApprovedAmt = await _recalcApprovedAmt(oExpense.travel_ID);
+
+            const sToday = new Date();
 
             await INSERT.into(TravelApproval).entries({
-                ID : cds.utils.uuid(),
+                ID: cds.utils.uuid(),
                 approver_ID: approver_ID,
                 travel_ID: oExpense.travel_ID,
                 approvedAmt: oExpense.approvedAmt,
-                remarks: remarks || `Bill ${oExpense.billNo} rejected.`,
+                remarks: oExpense.billNo,
                 actionDate: sToday,
                 status: 'Rejected',
             })
@@ -90,29 +92,33 @@ module.exports = class TravelApprovalService extends cds.ApplicationService {
             const aExpenses = await SELECT.from(TravelExpenses).where({ travel_ID: sTravelID })
                 .columns('amount', 'approved');
 
-            const nApprovedAmt = aExpenses.filter(e => e.approved === true)
-                .reduce((sum, e) => sum + (e.amount || 0), 0);
+            const nApprovedAmt = parseFloat(
+                aExpenses
+                    .filter(e => e.approved === true)
+                    .reduce((sum, e) => sum + (parseFloat(e.amount) || 0), 0)
+                    .toFixed(2)
+            );
 
             const nTotal = aExpenses.length;
-            const nApproved = aExpenses.filter( e => e.approved === true ).length;
-            const nRejected = aExpenses.filter( e => e.approved === false).length;
-            const nPending = aExpenses.filter(e => e.approved === null || e.approved === undefined );
+            const nApproved = aExpenses.filter(e => e.approved === true).length;
+            const nRejected = aExpenses.filter(e => e.approved === false).length;
+            const nPending = aExpenses.filter(e => e.approved === null || e.approved === undefined).length;
             let sRequestStatus = 'Pending';
             if (nPending === 0) {
-                if (nRejected === nTotal){
+                if (nRejected === nTotal) {
                     sRequestStatus = 'Rejected';
-                } else{
+                } else {
                     sRequestStatus = 'Approved';
                 };
             }
 
             await UPDATE(TravelRequest)
-                .set({ 
-                    approvedAmt: nApprovedAmt ,
+                .set({
+                    approvedAmt: nApprovedAmt,
                     status: sRequestStatus
                 })
                 .where({ ID: sTravelID });
-                return { nApprovedAmt };
+            return { nApprovedAmt };
         };
 
         return super.init();
