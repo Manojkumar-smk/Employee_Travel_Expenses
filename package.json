@@ -3,9 +3,10 @@
   "version": "1.0.0",
   "description": "A simple CAP project.",
   "dependencies": {
-    "@cap-js/hana": "^2.6.0",
+    "@cap-js/hana": "^2",
     "@sap/cds": "^9",
-    "express": "^4"
+    "express": "^4",
+    "@sap/xssec": "^4"
   },
   "devDependencies": {
     "@cap-js/sqlite": "^2",
@@ -27,5 +28,35 @@
     "app/project_master",
     "app/travel_master",
     "app/approval_master"
-  ]
+  ],
+  "cds": {
+  "requires": {
+    "[production]": {
+      "db": "hana",
+      "auth": "xsuaa"
+    },
+    "auth": {
+      "[development]": {
+        "kind": "mocked",
+        "users": {
+          "admin": {
+            "password": "admin",
+            "roles": ["Admin"],
+            "attr": { "empId": ["E-20609"] }
+          },
+          "employee": {
+            "password": "employee",
+            "roles": ["Employee"],
+            "attr": { "empId": ["E-20610", "E-20611", "E-20613"] }
+          },
+          "approver": {
+            "password": "approver",
+            "roles": ["Approver"],
+            "attr": { "empId": ["E-20612"] }
+          }
+        }
+      }
+    }
+  }
+}
 }

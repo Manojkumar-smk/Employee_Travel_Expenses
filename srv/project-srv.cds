@@ -1,6 +1,15 @@
 using {com.al.a1f6f1b3.db as a1f6f1b3} from '../db/schema';
 
-service ProjectService {
+service ProjectService @(restrict: [
+    {
+        grant: ['*'],
+        to   : 'Admin'
+    },
+    {
+        grant: ['READ'],
+        to   : 'Employee', where : ( empId : $user.empId)
+    }
+]) {
     entity ProjectStatus as projection on a1f6f1b3.ProjectStatus;
     entity Employees as projection on a1f6f1b3.Employees;
             @odata.draft.enabled

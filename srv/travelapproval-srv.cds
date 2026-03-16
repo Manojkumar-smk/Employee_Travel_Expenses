@@ -1,8 +1,11 @@
 using {com.al.a1f6f1b3.db as a1f6f1b3} from '../db/schema';
 
-service TravelApprovalService {
-
-
+service TravelApprovalService  @( restrict : [
+    {
+        grant : ['*'],
+        to : 'Employee', where : (approver_ID = $user.empId)
+    }
+ ]){
     entity Employees      as projection on a1f6f1b3.Employees;
     entity Projects       as projection on a1f6f1b3.Projects;
     entity Categories     as projection on a1f6f1b3.Categories;
