@@ -41,18 +41,15 @@
         "users": {
           "admin": {
             "password": "admin",
-            "roles": ["Admin"],
-            "attr": { "empId": ["E-20609"] }
+            "roles": ["Admin"]
           },
           "employee": {
             "password": "employee",
-            "roles": ["Employee"],
-            "attr": { "empId": ["E-20610", "E-20611", "E-20613"] }
+            "roles": ["Employee"]
           },
           "approver": {
             "password": "approver",
-            "roles": ["Approver"],
-            "attr": { "empId": ["E-20612"] }
+            "roles": ["Approver"]
           }
         }
       }

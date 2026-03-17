@@ -7,7 +7,7 @@ service employeeService @(restrict: [
     },
     {
         grant: ['READ'],
-        to   : 'Employee', where : ( empId : $user.empId)
+        to   : 'Employee'
     }
 ]) {
     entity Projects          as projection on db.Projects;

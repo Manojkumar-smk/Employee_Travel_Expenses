@@ -3,7 +3,7 @@ using {com.al.a1f6f1b3.db as a1f6f1b3} from '../db/schema';
 service TravelRequestService @( restrict : [
     {
         grant : ['*'],
-        to : 'Employee', where : (employee_ID = $user.empId)
+        to : 'Employee'
     }
  ]){
     entity Employees         as projection on a1f6f1b3.Employees;
