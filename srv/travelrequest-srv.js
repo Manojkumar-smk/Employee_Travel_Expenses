@@ -1,4 +1,5 @@
 const cds = require('@sap/cds');
+const { data } = require('@sap/cds/lib/dbs/cds-deploy');
 
 module.exports = class TravelRequestService extends cds.ApplicationService {
     async init() {
@@ -17,6 +18,14 @@ module.exports = class TravelRequestService extends cds.ApplicationService {
                     }else{
                     await UPDATE(TravelRequest.drafts).set({ eligibleAmt: eligibleAmt }).where({ ID: ID });
                     };
+                }
+            }
+            if (draftItem && draftItem.employee_ID){
+                const employee = await SELECT.one.from(Employees).columns('grade').where({ ID : draftItem.employee_ID });
+                if(employee && employee.grade){
+                    if (employee.grade !== data.user.attr.grade[0]){
+                        return req.error("Grade not Satisfied");
+                    }
                 }
             }
         });

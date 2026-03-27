@@ -45,7 +45,12 @@
           },
           "employee": {
             "password": "employee",
-            "roles": ["Employee"]
+            "roles": ["Employee"],
+            "attr" : {
+              "grade" : [ 
+                "A2"
+              ]
+            }
           },
           "approver": {
             "password": "approver",
