@@ -1,9 +1,10 @@
 const cds = require('@sap/cds');
 const { data } = require('@sap/cds/lib/dbs/cds-deploy');
+const { SELECT } = require('@sap/cds/lib/ql/cds-ql');
 
 module.exports = class TravelRequestService extends cds.ApplicationService {
     async init() {
-        const { Projects, TravelRequest, TravelExpenses } = this.entities;
+        const { Projects, TravelRequest, TravelExpenses, Employees } = this.entities;
 
         this.after("PATCH", TravelRequest.drafts, async (data, req) => {
             const { ID } = data;
@@ -14,7 +15,7 @@ module.exports = class TravelRequestService extends cds.ApplicationService {
                 if (project && project.budget) {
                     const eligibleAmt = Number(project.budget) * 0.5;
                     if(eligibleAmt <= 0){
-                        return req.error("Insuffient Budget for this Project: "+project.project);
+                         req.reject(403, "Insuffient Budget for this Project: "+project.project);
                     }else{
                     await UPDATE(TravelRequest.drafts).set({ eligibleAmt: eligibleAmt }).where({ ID: ID });
                     };
@@ -23,8 +24,8 @@ module.exports = class TravelRequestService extends cds.ApplicationService {
             if (draftItem && draftItem.employee_ID){
                 const employee = await SELECT.one.from(Employees).columns('grade').where({ ID : draftItem.employee_ID });
                 if(employee && employee.grade){
-                    if (employee.grade !== data.user.attr.grade[0]){
-                        return req.error("Grade not Satisfied");
+                    if (employee.grade !== req.user.attr.grade[0]){
+                         req.reject(403, "Grade not Satisfied");
                     }
                 }
             }

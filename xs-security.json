@@ -1,5 +1,55 @@
 {
-  "scopes": [],
-  "attributes": [],
-  "role-templates": []
+  "xsappname": "Employee_Travel_Expenses",
+  "tenant-mode": "dedicated",
+  "scopes": [
+    {
+      "name": "$XSAPPNAME.Admin",
+      "description": "Admin"
+    },
+    {
+      "name": "$XSAPPNAME.Employee",
+      "description": "Employee"
+    },
+    {
+      "name": "$XSAPPNAME.Approver",
+      "description": "Approver"
+    }
+  ],
+  "role-templates": [
+    {
+      "name": "Admin",
+      "description": "generated",
+      "scope-references": [
+        "$XSAPPNAME.Admin"
+      ],
+      "attribute-references": []
+    },
+    {
+      "name": "Employee",
+      "description": "generated",
+      "scope-references": [
+        "$XSAPPNAME.Employee"
+      ],
+      "attribute-references": [
+        {
+          "name": "grade"
+        }
+      ]
+    },
+    {
+      "name": "Approver",
+      "description": "generated",
+      "scope-references": [
+        "$XSAPPNAME.Approver"
+      ],
+      "attribute-references": []
+    }
+  ],
+  "attributes": [
+    {
+      "name": "grade",
+      "description": "Employee Grade",
+      "valueType": "string"
+    }
+  ]
 }

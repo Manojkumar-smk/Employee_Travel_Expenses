@@ -1,0 +1,2 @@
+sap.ui.define(["sap/ui/core/UIComponent","sap/ui/model/json/JSONModel","com/demo/approvalmaster/model/models"],function(e,t,o){"use strict";return e.extend("com.demo.approvalmaster.Component",{metadata:{manifest:"json",interfaces:["sap.ui.core.IAsyncContentCreation"]},init(){e.prototype.init.apply(this,arguments);this.setModel(o.createDeviceModel(),"device");this.setModel(new t({employeeId:null,employeeName:null,empId:null}),"appState");this.getRouter().initialize()}})});
+//# sourceMappingURL=Component.js.map

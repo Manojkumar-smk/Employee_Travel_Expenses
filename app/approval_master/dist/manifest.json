@@ -1,0 +1,153 @@
+{
+	"_version": "1.82.0",
+	"sap.app": {
+		"id": "com.demo.approvalmaster",
+		"type": "application",
+		"i18n": {
+			"bundleUrl": "i18n/i18n.properties",
+			"supportedLocales": [
+				""
+			]
+		},
+		"applicationVersion": {
+			"version": "0.0.1"
+		},
+		"title": "{{appTitle}}",
+		"description": "{{appDescription}}",
+		"resources": "resources.json",
+		"sourceTemplate": {
+			"id": "@sap/generator-fiori:basic",
+			"version": "1.20.4",
+			"toolsId": "daf9ba9b-806c-48dd-8181-1714429c1f77"
+		},
+		"dataSources": {
+			"mainService": {
+				"uri": "odata/v4/travel-approval/",
+				"type": "OData",
+				"settings": {
+					"annotations": [],
+					"odataVersion": "4.01"
+				}
+			}
+		},
+		"crossNavigation": {
+			"inbounds": {
+				"travel_master-display": {
+					"semanticObject": "approval_master",
+					"action": "manage",
+					"signature": {
+						"parameters": {},
+						"additionalParameters": "allowed"
+					}
+				}
+			}
+		}
+	},
+	"sap.ui": {
+		"technology": "UI5",
+		"icons": {
+			"icon": "",
+			"favIcon": "",
+			"phone": "",
+			"phone@2": "",
+			"tablet": "",
+			"tablet@2": ""
+		},
+		"deviceTypes": {
+			"desktop": true,
+			"tablet": true,
+			"phone": true
+		}
+	},
+	"sap.ui5": {
+		"flexEnabled": false,
+		"dependencies": {
+			"minUI5Version": "1.145.0",
+			"libs": {
+				"sap.m": {},
+				"sap.ui.core": {}
+			}
+		},
+		"contentDensities": {
+			"compact": true,
+			"cozy": true
+		},
+		"models": {
+			"i18n": {
+				"type": "sap.ui.model.resource.ResourceModel",
+				"settings": {
+					"bundleName": "com.demo.approvalmaster.i18n.i18n",
+					"supportedLocales": [
+						""
+					]
+				}
+			},
+			"": {
+				"dataSource": "mainService",
+				"preload": true,
+				"settings": {
+					"operationMode": "Server",
+					"autoExpandSelect": true,
+					"earlyRequests": true
+				}
+			}
+		},
+		"resources": {
+			"css": [
+				{
+					"uri": "css/style.css"
+				}
+			]
+		},
+		"routing": {
+			"config": {
+				"routerClass": "sap.m.routing.Router",
+				"controlAggregation": "pages",
+				"controlId": "app",
+				"transition": "slide",
+				"type": "View",
+				"viewType": "XML",
+				"path": "com.demo.approvalmaster.view",
+				"async": true,
+				"viewPath": "com.demo.approvalmaster.view"
+			},
+			"routes": [
+				{
+					"name": "Routetravelrequest",
+					"pattern": ":?query:",
+					"target": [
+						"Targettravelrequest"
+					]
+				},
+				{
+					"name": "RouteTravelExpenses",
+					"pattern": "TravelExpenses/{requestId}",
+					"target": [
+						"TargetTravelExpenses"
+					]
+				}
+			],
+			"targets": {
+				"Targettravelrequest": {
+					"id": "travelrequest",
+					"name": "travelrequest"
+				},
+				"TargetTravelExpenses": {
+					"id": "travelexpenses",
+					"name": "travelexpenses"
+				}
+			}
+		},
+		"rootView": {
+			"viewName": "com.demo.approvalmaster.view.App",
+			"type": "XML",
+			"id": "App",
+			"async": true
+		},
+		"flexBundle": false
+	},
+	"sap.cloud": {
+		"public": true,
+		"service": "Employee_Travel_Expenses.service"
+	}
+}

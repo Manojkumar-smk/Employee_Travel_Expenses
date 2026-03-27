@@ -5,11 +5,12 @@
   "dependencies": {
     "@cap-js/hana": "^2",
     "@sap/cds": "^9",
-    "express": "^4",
-    "@sap/xssec": "^4"
+    "@sap/xssec": "^4",
+    "express": "^4"
   },
   "devDependencies": {
     "@cap-js/sqlite": "^2",
+    "@sap/cds-dk": "^9",
     "cds-plugin-ui5": "^0.13.0"
   },
   "scripts": {
@@ -30,35 +31,46 @@
     "app/approval_master"
   ],
   "cds": {
-  "requires": {
-    "[production]": {
-      "db": "hana",
-      "auth": "xsuaa"
-    },
-    "auth": {
-      "[development]": {
-        "kind": "mocked",
-        "users": {
-          "admin": {
-            "password": "admin",
-            "roles": ["Admin"]
-          },
-          "employee": {
-            "password": "employee",
-            "roles": ["Employee"],
-            "attr" : {
-              "grade" : [ 
-                "A2"
+    "requires": {
+      "[production]": {
+        "db": "hana"
+      },
+      "auth": {
+        "[development]": {
+          "kind": "mocked",
+          "users": {
+            "admin": {
+              "password": "admin",
+              "roles": [
+                "Admin"
+              ]
+            },
+            "employee": {
+              "password": "employee",
+              "roles": [
+                "Employee"
+              ],
+              "attr": {
+                "grade": [
+                  "A2"
+                ]
+              }
+            },
+            "approver": {
+              "password": "approver",
+              "roles": [
+                "Approver"
               ]
             }
-          },
-          "approver": {
-            "password": "approver",
-            "roles": ["Approver"]
           }
+        },
+        "[production]": {
+          "kind": "xsuaa"
         }
-      }
+      },
+      "destinations": true,
+      "html5-repo": true,
+      "workzone": true
     }
   }
-}
 }
