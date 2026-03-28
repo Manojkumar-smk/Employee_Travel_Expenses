@@ -33,7 +33,10 @@
   "cds": {
     "requires": {
       "[production]": {
-        "db": "hana"
+        "db": "hana",
+        "auth": {
+          "kind": "xsuaa"
+        }
       },
       "auth": {
         "[development]": {
